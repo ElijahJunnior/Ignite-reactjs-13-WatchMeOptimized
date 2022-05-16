@@ -8,6 +8,7 @@ interface MovieCardProps {
   rating: string;
   runtime: string;
 }
+// elias_fazer - adicionar função memo
 
 export function MovieCard(props: MovieCardProps) {
   return (

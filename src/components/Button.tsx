@@ -9,6 +9,8 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   selected: boolean;
 }
 
+// elias_fazer - adicionar função memo
+
 export function Button({ iconName, title, selected, ...rest }: ButtonProps) {
   return (
     <button type="button" {...(selected && { className: 'selected' })} {...rest}>

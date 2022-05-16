@@ -35,12 +35,14 @@ export function App() {
   const [movies, setMovies] = useState<MovieProps[]>([]);
   const [selectedGenre, setSelectedGenre] = useState<GenreResponseProps>({} as GenreResponseProps);
 
+  // elias_fazer - adicionar useMemo a essa consulta 
   useEffect(() => {
     api.get<GenreResponseProps[]>('genres').then(response => {
       setGenres(response.data);
     });
   }, []);
-
+  
+  // elias_fazer - adicionar useMemo a essa consulta 
   useEffect(() => {
     api.get<MovieProps[]>(`movies/?Genre_id=${selectedGenreId}`).then(response => {
       setMovies(response.data);
@@ -51,6 +53,7 @@ export function App() {
     })
   }, [selectedGenreId]);
 
+  // elias_fazer - add callback nessa função
   function handleClickButton(id: number) {
     setSelectedGenreId(id);
   }
