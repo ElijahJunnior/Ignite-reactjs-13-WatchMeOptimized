@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { SideBar } from './components/SideBar';
 import { Content } from './components/Content';
@@ -9,6 +9,7 @@ import './styles/global.scss';
 
 import './styles/sidebar.scss';
 import './styles/content.scss';
+import { useGenre } from './contexts/genreContext';
 
 interface GenreResponseProps {
   id: number;
@@ -28,12 +29,14 @@ interface MovieProps {
 }
 
 export function App() {
-  const [selectedGenreId, setSelectedGenreId] = useState(1);
-
-  const [genres, setGenres] = useState<GenreResponseProps[]>([]);
+  
+  // const [activeGenre, setactiveGenre] = useState(1);
+  // const [genres, setGenres] = useState<GenreResponseProps[]>([]);
 
   const [movies, setMovies] = useState<MovieProps[]>([]);
   const [selectedGenre, setSelectedGenre] = useState<GenreResponseProps>({} as GenreResponseProps);
+
+  const { setGenres, activeGenre, setActiveGenre } = useGenre()
 
   // elias_fazer - adicionar useMemo a essa consulta 
   useEffect(() => {
@@ -41,28 +44,32 @@ export function App() {
       setGenres(response.data);
     });
   }, []);
+
+  // const genresMemo = useMemo(() => { 
+  //   return [...genres]
+  // }, [])
   
   // elias_fazer - adicionar useMemo a essa consulta 
   useEffect(() => {
-    api.get<MovieProps[]>(`movies/?Genre_id=${selectedGenreId}`).then(response => {
+    api.get<MovieProps[]>(`movies/?Genre_id=${activeGenre}`).then(response => {
       setMovies(response.data);
     });
 
-    api.get<GenreResponseProps>(`genres/${selectedGenreId}`).then(response => {
+    api.get<GenreResponseProps>(`genres/${activeGenre}`).then(response => {
       setSelectedGenre(response.data);
     })
-  }, [selectedGenreId]);
+  }, [activeGenre]);
 
   // elias_fazer - add callback nessa função
-  function handleClickButton(id: number) {
-    setSelectedGenreId(id);
-  }
+  const handleClickButton = useCallback(
+    (id: number) => {
+      setActiveGenre(id);
+    }, 
+  [])  
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       <SideBar
-        genres={genres}
-        selectedGenreId={selectedGenreId}
         buttonClickCallback={handleClickButton}
       />
 
