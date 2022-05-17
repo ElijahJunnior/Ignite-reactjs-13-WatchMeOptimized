@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { SideBar } from './components/SideBar';
 import { Content } from './components/Content';
+import { useGenre } from './contexts/GenreContext';
 
 import { api } from './services/api';
 
@@ -9,7 +10,6 @@ import './styles/global.scss';
 
 import './styles/sidebar.scss';
 import './styles/content.scss';
-import { useGenre } from './contexts/genreContext';
 
 interface GenreResponseProps {
   id: number;
@@ -44,10 +44,6 @@ export function App() {
       setGenres(response.data);
     });
   }, []);
-
-  // const genresMemo = useMemo(() => { 
-  //   return [...genres]
-  // }, [])
   
   // elias_fazer - adicionar useMemo a essa consulta 
   useEffect(() => {
@@ -58,20 +54,12 @@ export function App() {
     api.get<GenreResponseProps>(`genres/${activeGenre}`).then(response => {
       setSelectedGenre(response.data);
     })
+    
   }, [activeGenre]);
-
-  // elias_fazer - add callback nessa função
-  const handleClickButton = useCallback(
-    (id: number) => {
-      setActiveGenre(id);
-    }, 
-  [])  
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
-      <SideBar
-        buttonClickCallback={handleClickButton}
-      />
+      <SideBar />
 
       <Content
         selectedGenre={selectedGenre}

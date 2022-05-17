@@ -1,7 +1,7 @@
 import { render } from 'react-dom'
 
 import { App } from './App'
-import { GenreProvider } from './contexts/genreContext'
+import { GenreProvider } from './contexts/GenreContext'
 
 render(
   <GenreProvider>

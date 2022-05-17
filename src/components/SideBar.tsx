@@ -1,13 +1,10 @@
-import { useGenre } from "../contexts/genreContext";
+import { memo } from "react";
+import { useGenre } from "../contexts/GenreContext";
 import { Button } from "./Button";
 
-interface SideBarProps {
-  buttonClickCallback: (args: any) => void;
-}
-
-export function SideBar( { buttonClickCallback }: SideBarProps) {
+function SideBarComponent () {
   
-  const { genres, activeGenre } = useGenre();
+  const { genres, activeGenre, setActiveGenre } = useGenre();
 
   return (
     <nav className="sidebar">
@@ -17,10 +14,9 @@ export function SideBar( { buttonClickCallback }: SideBarProps) {
         {genres.map(genre => (
           <Button
             key={String(genre.id)}
+            id={genre.id}
             title={genre.title}
             iconName={genre.name}
-            onClick={() => buttonClickCallback(genre.id)}
-            selected={activeGenre === genre.id}
           />
         ))}
       </div>
@@ -28,3 +24,5 @@ export function SideBar( { buttonClickCallback }: SideBarProps) {
     </nav>
   )
 }
+
+export const SideBar = memo(SideBarComponent);
