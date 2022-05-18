@@ -1,4 +1,5 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { api } from "../services/api";
 
 type Genre = {
   id: number,
@@ -6,11 +7,23 @@ type Genre = {
   title: string
 }
 
+type Movie = {
+  imdbID: string, 
+  Title: string, 
+  Poster: string, 
+  Ratings: Array<{
+    Source: string, 
+    Value: string, 
+  }>, 
+  Runtime: string
+}
+
 type GenreContextData = { 
-  activeGenre: number, 
-  setActiveGenre: (id: number) => void,  
-  genres: Genre[],
-  setGenres: (genres: Genre[]) => void 
+  genres: Genre[], 
+  activeGenreID: number, 
+  setActiveGenreID: (id: number) => void,  
+  activeGenreData: Genre, 
+  movies: Movie[] 
 };
 
 type GenreContextProps = {
@@ -21,14 +34,39 @@ export const GenreContext = createContext({} as GenreContextData);
 
 export function GenreProvider({children} : GenreContextProps) {
    
-  const [activeGenre, setActiveGenre] = useState(1);
-  const [genres, setGenres] = useState([] as Genre[]);
+  const [genres, setGenres] = useState<Genre[]>([]);
+  const [activeGenreID, setActiveGenreID] = useState(1);
+  const [activeGenreData, setActiveGenreData] = useState({} as Genre);
+  const [movies, setMovies] = useState<Movie[]>([]);
 
+  // elias_fazer - adicionar useMemo a essa consulta 
+  useEffect(() => {
+    
+    api.get<Genre[]>('genres').then(response => {
+      setGenres(response.data);
+    });
+
+  }, []);
+
+  // elias_fazer - adicionar useMemo a essa consulta 
+  useEffect(() => {
+    
+    api.get<Movie[]>(`movies/?Genre_id=${activeGenreID}`).then(response => {
+      setMovies(response.data);
+    });
+
+    api.get<Genre>(`genres/${activeGenreID}`).then(response => {
+      setActiveGenreData(response.data);
+    });
+    
+  }, [activeGenreID]);
+  
   const data = { 
-    activeGenre, 
-    setActiveGenre, 
     genres, 
-    setGenres
+    activeGenreID, 
+    setActiveGenreID, 
+    activeGenreData, 
+    movies
   }
 
   return (

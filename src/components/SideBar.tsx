@@ -4,7 +4,7 @@ import { Button } from "./Button";
 
 function SideBarComponent () {
   
-  const { genres, activeGenre, setActiveGenre } = useGenre();
+  const { genres } = useGenre();
 
   return (
     <nav className="sidebar">

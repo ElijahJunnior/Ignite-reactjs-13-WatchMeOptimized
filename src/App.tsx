@@ -11,58 +11,18 @@ import './styles/global.scss';
 import './styles/sidebar.scss';
 import './styles/content.scss';
 
-interface GenreResponseProps {
-  id: number;
-  name: 'action' | 'comedy' | 'documentary' | 'drama' | 'horror' | 'family';
-  title: string;
-}
-
-interface MovieProps {
-  imdbID: string;
-  Title: string;
-  Poster: string;
-  Ratings: Array<{
-    Source: string;
-    Value: string;
-  }>;
-  Runtime: string;
-}
-
 export function App() {
   
   // const [activeGenre, setactiveGenre] = useState(1);
   // const [genres, setGenres] = useState<GenreResponseProps[]>([]);
-
-  const [movies, setMovies] = useState<MovieProps[]>([]);
-  const [selectedGenre, setSelectedGenre] = useState<GenreResponseProps>({} as GenreResponseProps);
-
-  const { setGenres, activeGenre, setActiveGenre } = useGenre()
-
-  // elias_fazer - adicionar useMemo a essa consulta 
-  useEffect(() => {
-    api.get<GenreResponseProps[]>('genres').then(response => {
-      setGenres(response.data);
-    });
-  }, []);
-  
-  // elias_fazer - adicionar useMemo a essa consulta 
-  useEffect(() => {
-    api.get<MovieProps[]>(`movies/?Genre_id=${activeGenre}`).then(response => {
-      setMovies(response.data);
-    });
-
-    api.get<GenreResponseProps>(`genres/${activeGenre}`).then(response => {
-      setSelectedGenre(response.data);
-    })
-    
-  }, [activeGenre]);
+  const { activeGenreData, movies } = useGenre()
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       <SideBar />
 
       <Content
-        selectedGenre={selectedGenre}
+        selectedGenre={activeGenreData}
         movies={movies}
       />
     </div>

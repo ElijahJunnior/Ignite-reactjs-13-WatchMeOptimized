@@ -16,14 +16,14 @@ type ButtonProps = {
 
  function ButtonComponent({ id, iconName, title }: ButtonProps) {
   
-  const { activeGenre, setActiveGenre } = useGenre();
+  const { activeGenreData, setActiveGenreID } = useGenre();
 
-  const selected = id === activeGenre
+  const selected = id === activeGenreData?.id
   
   return (
     <button 
       type="button" {...(selected && { className: 'selected' })}
-      onClick={() => { setActiveGenre(id)}}
+      onClick={() => { setActiveGenreID(id)}}
     >
       <Icon name={iconName} color={selected ? '#FAE800' : '#FBFBFB'} />
       {title}
