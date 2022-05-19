@@ -1,31 +1,43 @@
+import { useEffect, useState } from "react";
 import { MovieCard } from "./MovieCard";
+import { Genre, useGenre } from '../contexts/GenreContext';
+import { api } from "../services/api";
 
-interface ContentProps {
-  selectedGenre: {
-    id: number;
-    name: 'action' | 'comedy' | 'documentary' | 'drama' | 'horror' | 'family';
-    title: string;
-  };
-
-  movies: Array<{
-    imdbID: string;
-    Title: string;
-    Poster: string;
-    Ratings: Array<{
-      Source: string;
-      Value: string;
-    }>;
-    Runtime: string;
-  }>;
+export type Movie = {
+  imdbID: string, 
+  Title: string, 
+  Poster: string, 
+  Ratings: Array<{
+    Source: string, 
+    Value: string, 
+  }>, 
+  Runtime:
+   string
 }
 
-export function Content({ selectedGenre, movies }: ContentProps) {
+export function Content() {
+  
+  const [activeGenreData, setActiveGenreData] = useState({} as Genre);
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const { activeGenreID } = useGenre();
+
+  useEffect(() => {
+  
+    api.get<Movie[]>(`movies/?Genre_id=${activeGenreID}`).then(response => {
+      setMovies(response.data);
+    });
+
+    api.get<Genre>(`genres/${activeGenreID}`).then(response => {
+      setActiveGenreData(response.data);
+    });
+    
+  }, [activeGenreID]);
+  
   return (
     <div className="container">
       <header>
-        <span className="category">Categoria:<span> {selectedGenre.title}</span></span>
+        <span className="category">Categoria:<span> {activeGenreData.title}</span></span>
       </header>
-
       <main>
         <div className="movies-list">
           {movies.map(movie => (
@@ -35,4 +47,5 @@ export function Content({ selectedGenre, movies }: ContentProps) {
       </main>
     </div>
   )
+
 }

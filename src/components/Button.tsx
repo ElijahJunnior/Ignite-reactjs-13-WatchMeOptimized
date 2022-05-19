@@ -14,10 +14,10 @@ type ButtonProps = {
 
 function ButtonComponent({ id, iconName, title,  selected }: ButtonProps) {  
   
-  const { setActiveGenre } = useGenre();
+  const { setActiveGenreID } = useGenre();
 
   const onClick = useCallback(() => { 
-    setActiveGenre(id);
+    setActiveGenreID(id);
   }, [])
   
   return (
