@@ -20,7 +20,6 @@ export function App() {
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       <SideBar />
-
       <Content
         selectedGenre={activeGenreData}
         movies={movies}

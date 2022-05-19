@@ -1,6 +1,5 @@
 import { Icon } from './Icon';
-
-import { ButtonHTMLAttributes, memo } from 'react';
+import { memo, useCallback } from 'react';
 import '../styles/button.scss';
 import { useGenre } from '../contexts/GenreContext';
 
@@ -10,27 +9,35 @@ type ButtonProps = {
   id: number, 
   title: string, 
   iconName: 'action' | 'comedy' | 'documentary' | 'drama' | 'horror' | 'family', 
-  // selected: boolean;
-  // onClick: () => void;
+  selected: boolean;
 }
 
- function ButtonComponent({ id, iconName, title }: ButtonProps) {
+function ButtonComponent({ id, iconName, title,  selected }: ButtonProps) {  
   
-  const { activeGenreData, setActiveGenreID } = useGenre();
+  const { setActiveGenre } = useGenre();
 
-  const selected = id === activeGenreData?.id
+  const onClick = useCallback(() => { 
+    setActiveGenre(id);
+  }, [])
   
   return (
     <button 
       type="button" {...(selected && { className: 'selected' })}
-      onClick={() => { setActiveGenreID(id)}}
+      onClick={onClick}
     >
-      <Icon name={iconName} color={selected ? '#FAE800' : '#FBFBFB'} />
-      {title}
+      <Icon 
+        name={iconName} color={selected ? '#FAE800' : '#FBFBFB'} 
+      />
+        {title}
     </button>
   );
 }
 
 export const Button = memo(ButtonComponent, (prevProps, nextProps) => {
-  return Object.is(prevProps, nextProps)
+  return (
+    prevProps.id === nextProps.id &&
+    prevProps.title === nextProps.title &&
+    prevProps.iconName === nextProps.iconName &&
+    prevProps.selected === nextProps.selected
+  );
 })

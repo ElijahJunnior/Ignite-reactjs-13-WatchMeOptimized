@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
 import { api } from "../services/api";
 
 type Genre = {
@@ -21,7 +21,7 @@ type Movie = {
 type GenreContextData = { 
   genres: Genre[], 
   activeGenreID: number, 
-  setActiveGenreID: (id: number) => void,  
+  setActiveGenre: (id: number) => void,  
   activeGenreData: Genre, 
   movies: Movie[] 
 };
@@ -35,7 +35,7 @@ export const GenreContext = createContext({} as GenreContextData);
 export function GenreProvider({children} : GenreContextProps) {
    
   const [genres, setGenres] = useState<Genre[]>([]);
-  const [activeGenreID, setActiveGenreID] = useState(1);
+  const [activeGenreID, setActiveGenre] = useState(1);
   const [activeGenreData, setActiveGenreData] = useState({} as Genre);
   const [movies, setMovies] = useState<Movie[]>([]);
 
@@ -61,10 +61,14 @@ export function GenreProvider({children} : GenreContextProps) {
     
   }, [activeGenreID]);
   
+  // const setActiveGenre = useCallback((genreID: number) => { 
+  //   setActiveGenreID(genreID);
+  // }, []);
+
   const data = { 
     genres, 
     activeGenreID, 
-    setActiveGenreID, 
+    setActiveGenre, 
     activeGenreData, 
     movies
   }

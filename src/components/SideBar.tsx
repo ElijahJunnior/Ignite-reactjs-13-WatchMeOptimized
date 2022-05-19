@@ -1,10 +1,10 @@
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { useGenre } from "../contexts/GenreContext";
 import { Button } from "./Button";
 
 function SideBarComponent () {
   
-  const { genres } = useGenre();
+  const { genres, activeGenreID } = useGenre();
 
   return (
     <nav className="sidebar">
@@ -13,10 +13,11 @@ function SideBarComponent () {
       <div className="buttons-container">
         {genres.map(genre => (
           <Button
-            key={String(genre.id)}
+            key={genre.id}
             id={genre.id}
             title={genre.title}
             iconName={genre.name}
+            selected={genre.id === activeGenreID}
           />
         ))}
       </div>
