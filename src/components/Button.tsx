@@ -39,5 +39,5 @@ export const Button = memo(ButtonComponent, (prevProps, nextProps) => {
     prevProps.title === nextProps.title &&
     prevProps.iconName === nextProps.iconName &&
     prevProps.selected === nextProps.selected
-  );
+  ) 
 })
