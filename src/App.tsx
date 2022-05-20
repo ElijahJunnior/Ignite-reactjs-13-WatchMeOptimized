@@ -15,15 +15,12 @@ export function App() {
   
   // const [activeGenre, setactiveGenre] = useState(1);
   // const [genres, setGenres] = useState<GenreResponseProps[]>([]);
-  const { activeGenreData, movies } = useGenre()
+  // const { activeGenreData, movies } = useGenre()
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       <SideBar />
-      <Content
-        selectedGenre={activeGenreData}
-        movies={movies}
-      />
+      <Content />
     </div>
   )
 }
