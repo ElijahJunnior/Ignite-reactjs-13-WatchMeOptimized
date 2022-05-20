@@ -1,4 +1,4 @@
-import { memo, useCallback } from "react";
+import { memo } from "react";
 import { useGenre } from "../contexts/GenreContext";
 import { Button } from "./Button";
 

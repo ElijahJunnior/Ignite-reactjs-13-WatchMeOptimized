@@ -3,8 +3,6 @@ import { memo, useCallback } from 'react';
 import '../styles/button.scss';
 import { useGenre } from '../contexts/GenreContext';
 
-// extends ButtonHTMLAttributes<HTMLButtonElement>
-
 type ButtonProps = {
   id: number, 
   title: string, 
